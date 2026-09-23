@@ -1,0 +1,194 @@
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  /* ─ Semantic palette (11 tokens, single source of truth) ─────────────────
+     No colour literal appears anywhere in the codebase outside this block. */
+  --field:           #241E19;   /* dark brown field, ~60% of every screen */
+  --field-raised:    #2E2720;   /* nav, footer, panels on the field */
+  --surface:         #EAE5DC;   /* warm cream cards, ~30% of screen */
+  --ink:             #F2EDE4;   /* primary text ON the field — 11.8:1 */
+  --ink-muted:       #A8A49E;   /* captions, metadata, status lines (≥15px) */
+  --ink-on-surface:  #1E1915;   /* all text inside a card */
+  --ink-on-surface-muted: #4A443C; /* secondary text inside a card, 7.7:1 on --surface */
+  --edge-on-surface: #C8C0B2;   /* hairlines and borders INSIDE a light card */
+  --accent:          #5FD3C4;   /* light teal: links/stats ON the dark field */
+  --accent-surface:  #15665E;   /* dark teal: links/stats INSIDE a light card, 5.4:1 on --surface */  --accent-fill:     #3CBDB0;   /* mid teal: button + tag backgrounds only */
+  --on-accent:       #0C1F1E;   /* labels sitting on --accent-fill */
+  --edge:            #38322B;   /* hairlines, dividers, card borders */
+
+  /* ─ Tailwind contract tokens (map semantic palette → utility classes) ─── */
+  --font-size: 17px;
+  --background:             var(--field);
+  --foreground:             var(--ink);
+  --card:                   var(--surface);
+  --card-foreground:        var(--ink-on-surface);
+  --popover:                var(--surface);
+  --popover-foreground:     var(--ink-on-surface);
+  --primary:                var(--accent);
+  --primary-foreground:     var(--on-accent);
+  --secondary:              var(--field-raised);
+  --secondary-foreground:   var(--ink);
+  --muted:                  var(--field-raised);
+  --muted-foreground:       var(--ink-muted);
+  --accent:                 var(--accent-fill);
+  --accent-foreground:      var(--on-accent);
+  --destructive:            #C45A4A;
+  --destructive-foreground: var(--ink);
+  --border:                 var(--edge);
+  --input:                  var(--field-raised);
+  --input-background:       var(--field-raised);
+  --switch-background:      var(--edge);
+  --font-weight-medium: 500;
+  --font-weight-normal: 400;
+  --ring:                   var(--accent);
+
+  /* Three font tokens (single source of truth). Every component reads these. */
+  --font-display: "Instrument Serif", Georgia, "Times New Roman", serif;
+  --font-body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-data: "IBM Plex Mono", "SFMono-Regular", "Courier New", monospace;
+
+  /* Type scale base, one knob scales every heading together. */
+  --type-scale: 1;
+  --fs-h2: calc(var(--type-scale) * clamp(40px, 5vw, 72px));
+  --fs-h3: calc(var(--type-scale) * clamp(28px, 3.4vw, 44px));
+  --fs-h4: calc(var(--type-scale) * clamp(20px, 2.2vw, 28px));
+  --fs-eyebrow: calc(var(--type-scale) * 13px);
+
+  --chart-1: var(--accent);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --radius: 0.375rem;
+  --sidebar:                     var(--field-raised);
+  --sidebar-foreground:          var(--ink);
+  --sidebar-primary:             var(--accent);
+  --sidebar-primary-foreground:  var(--on-accent);
+  --sidebar-accent:              var(--accent-fill);
+  --sidebar-accent-foreground:   var(--on-accent);
+  --sidebar-border:              var(--edge);
+  --sidebar-ring:                var(--accent);
+}
+
+/* This theme is already dark. Force dark scrollbars + form controls even when
+   system prefers light — per spec: keep this palette regardless of OS setting. */
+:root {
+  color-scheme: dark;
+}
+
+/* ─ No separate .dark block needed — palette is always dark ─────────────── */
+
+@theme inline {
+  --color-background:    var(--background);
+  --color-foreground:    var(--foreground);
+  --color-card:          var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover:       var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary:       var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary:     var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted:         var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent:        var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive:   var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border:        var(--border);
+  --color-input:         var(--input);
+  --color-input-background: var(--input-background);
+  --color-switch-background: var(--switch-background);
+  --color-ring:          var(--ring);
+  --color-chart-1:       var(--chart-1);
+  --color-chart-2:       var(--chart-2);
+  --color-chart-3:       var(--chart-3);
+  --color-chart-4:       var(--chart-4);
+  --color-chart-5:       var(--chart-5);
+  --radius-sm: calc(var(--radius) - 2px);
+  --radius-md: var(--radius);
+  --radius-lg: calc(var(--radius) + 2px);
+  --radius-xl: calc(var(--radius) + 6px);
+  --color-sidebar:       var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring:  var(--sidebar-ring);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Focus ring: 2px accent, 3px offset, visible on field, surface, and photos. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* Text selection uses accent-fill at 30% opacity. */
+  ::selection {
+    background-color: color-mix(in srgb, var(--accent-fill) 30%, transparent);
+    color: var(--ink);
+  }
+
+  /* Scrollbar: accent on field-raised track. */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--field-raised); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--ink-muted); }
+
+  html {
+    font-size: var(--font-size);
+  }
+
+  h1 {
+    font-size: var(--text-2xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h2 {
+    font-size: var(--text-xl);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h3 {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  h4 {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  label {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  button {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1.5;
+  }
+
+  input {
+    font-size: var(--text-base);
+    font-weight: var(--font-weight-normal);
+    line-height: 1.5;
+  }
+}

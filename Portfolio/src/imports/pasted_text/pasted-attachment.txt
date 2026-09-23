@@ -1,0 +1,188 @@
+# Building William Dakare's Robotics Engineering Portfolio: Design Principles + a Ready-to-Paste Figma Make Prompt
+
+## TL;DR
+- **The single most important fix is strategic contrast: pick ONE hero project (recommend the BYU NSF REU compliant-mechanisms work) and give it dramatically more visual weight — larger, higher on the page, richer media — than everything else, instead of a flat, equal-weight grid.** Reviewers scan portfolios in seconds; a page where "every section is a hero" flattens because nothing wins.
+- **For a robotics/hardware portfolio, embedded 30–60 second videos of hardware actually moving, quantified results, and honest documentation of iteration/failure are what get engineers hired** — polish matters less than showing credible process and proof it worked. This is confirmed by the best Northwestern MSR student portfolios (Hughes, Nel, Garverick, Rahme) that led to offers at Boston Dynamics and the AI Institute.
+- **Figma Make can generate a beautiful, accessible, principle-driven portfolio, but it CANNOT by itself give you the no-code, markdown editing layer you want.** Use Figma Make for the design/front-end, then pair it with a Git-based CMS (Decap CMS or TinaCMS) on your GitHub Pages setup for word-level self-editing. The prompt in Part B specifies both.
+
+## Key Findings
+
+1. **Contrast is your actual problem, and it has two meanings — both need fixing.** Visual contrast (size, weight, color, spacing) creates legibility and hierarchy; strategic contrast means differentiating one or two hero projects from the rest. Your instinct is right: a flat grid of equally-weighted projects has no focal point and no message.
+2. **Reviewers triage fast.** The initial scan is a rejection filter measured in single-digit seconds — Ladders Inc.'s 2018 eye-tracking study clocked recruiters at an average initial screen of just 7.4 seconds, with more time spent on job titles than any other element. Portfolios get similar cursory first passes. Your above-the-fold and hero project must communicate value instantly.
+3. **Quality over quantity: 3–5 projects, not everything.** Every authority converges on this. You have ~6 strong project areas — curate to your best 3–5 and demote the rest.
+4. **Process and failure beat polish for engineers.** Hiring managers detect shallow work; they want reasoning, iteration, debugging, and quantified results — exactly the "workmanship" a resume can't show.
+5. **Hardware portfolios are judged on artifacts and motion.** Videos of things moving, CAD renders, FEA plots, test rigs, and quantified outcomes are the content types that matter — not prose.
+6. **The editable-content requirement needs a separate tool from Figma Make.** Figma Make produces React/HTML code or a hosted prototype; it is not a CMS. A Git-based CMS layer is the right pairing for GitHub Pages.
+
+## Details
+
+### Part A — Research Synthesis: The Design Principles
+
+#### 1. Core, evidence-based portfolio design principles
+
+**Visual hierarchy is the master principle.** Nielsen Norman Group's eye-tracking research established that users scan pages, they don't read them, and that a clear visual hierarchy "controls the delivery of the experience." Two signals do most of the work: **size difference between levels** and **whitespace separation between sections.** NN/G's "Scrolling and Attention" eye-tracking study found users spend about **57% of page-viewing time above the fold, and 74% within the first two screenfuls (up to ~2160px)** — so vertical placement is one of your most powerful tools.
+
+**Scanning patterns.** NN/G's F-shaped pattern (identified 2006, eye-tracking-validated) governs text-heavy pages: users read a horizontal top bar, a shorter second bar, then scan down the left edge — missing content on the right and lower down. The Z-pattern governs minimal, image-led layouts. Takeaway for you: put your most important element top-left/top-center, use strong headings and front-loaded first words, and don't bury key information in the lower-right. A "layer-cake" pattern (alternating full-width bands with clear headings) helps reviewers scan a long project page.
+
+**Refactoring UI (Adam Wathan & Steve Schoger) — concrete, non-designer rules:**
+- **Design in grayscale first; add color last.** This forces hierarchy through spacing, contrast, and typography before color becomes a crutch.
+- **Start with too much whitespace, then remove.** Generous negative space is the fastest way to look "designed."
+- Use a **constrained spacing scale** (e.g., 4, 8, 16, 24, 32, 48, 64px); no two values closer than ~25%.
+- **Limit to 2–3 font weights and a small color set.** Emphasize with weight/contrast, de-emphasize with lower contrast (softer gray) rather than adding noise.
+- **Semantics are secondary to hierarchy:** one primary action gets a high-contrast solid treatment; secondary is outline/low-contrast; tertiary is a plain link.
+- Fix layout and hierarchy first; don't obsess over icons, shadows, or micro-interactions until those work.
+
+**Typography (Butterick's Practical Typography — the four choices that determine body-text quality):**
+- **Point size:** 15–25px on the web for body text.
+- **Line spacing (line-height):** 120–145% of point size (≈1.2–1.45 unitless in CSS).
+- **Line length:** 45–90 characters per line (66 is the classic ideal). Constrain your case-study text column.
+- **Font:** use a professional font; avoid system defaults like Times New Roman and Arial (Butterick: "favored only by the apathetic and sloppy"). Use bold/italic sparingly and never together.
+
+**Restraint.** The recurring theme across every source: one clear message per screen, fewer projects shown better, generous space. Austin Briggs — who BU's College of Engineering reported (June 2018) was "the first freshman to ever win the annual Overall Best Portfolio award" — won with a minimalist design and, in his own words, "spent a lot of time breaking down some of the technical components into easy to understand words or pictures."
+
+#### 2. Contrast and focus (your stated gap) — the deepest dive
+
+**Visual contrast** is the engine of emphasis. A focal point is created by giving one element more visual weight — through size, color, contrast, or isolation in whitespace — than everything around it. Critically: **"A 'focal' element that is the same size, weight and colour as the surrounding content isn't actually focal — it just sits there."** The classic failure mode is exactly the one you describe: **"Every section a hero. Every heading 64px bold. The page flattens because nothing wins. Loud everywhere, quiet nowhere."** The fix, stated by multiple design sources: **"Choose one main focal point and make everything else support it"** — "the focal element has to dominate, which means the surroundings have to step back."
+
+**Strategic contrast (content differentiation).** Don't present all projects at equal weight. Establish **levels of dominance** — Smashing Magazine's dominance/focal-point framework recommends ~3 levels max, because each added level reduces the contrast between neighbors:
+- **Level 1 — the hero:** one flagship project, full-bleed or oversized, richest media, highest on the page, most detailed case study.
+- **Level 2 — supporting features:** 2–3 secondary projects with medium weight (card with image + summary + tags).
+- **Level 3 — the rest:** compact list items (title + one line + tags), or a "more projects" section.
+
+For William specifically, the **BYU NSF REU compliant-mechanisms work** (isoperimetric soft-robot modeling, the cable-driven 2:1 mechanical-advantage loading rig, FEA, MATLAB/Baumgarte stabilization, waterjet fabrication) is the strongest hero for robotics + grad-school audiences: research-grade, quantified, multidisciplinary. The **BU Material Robotics Lab bronchoscopy soft robot** (4mm, silicone injection molding, DFM changes that increased bend angle 350%) is a superb co-hero because the 350% number is a concrete, memorable quantified result.
+
+**"One clear message per screen."** Each section should answer one question. The homepage answers "who are you and what's your best work?" Each project page answers "what problem, how did you solve it, did it work?"
+
+#### 3. What actually gets engineers hired
+
+**Reviewers triage in seconds, then commit time only if you pass.** Ladders Inc.'s 2018 study clocked recruiters at an average 7.4-second initial screen — a "rejection clock," not a reading time — and found they "spent more time focusing on job titles than on any other element." Portfolios get a similarly fast first pass; general developer-hiring guidance cites roughly 15 seconds on portfolio sites during initial screening. Implication: name, role, value proposition, and hero project must land instantly, above the fold.
+
+**Quality over quantity — 3 to 5 projects.** Universal across sources (NYU Tandon, The Construct, Fonzi). NYU Tandon's guidance: organize for a recruiter who only skims, keep it short, fit the noteworthy "above the fold," don't over-explain ("People aren't likely to read it"), and remember "quality always trumps quantity... not supposed to be a digital repository for everything you've ever made."
+
+**Process, iteration, and failure — the "workmanship test."** Hiring managers "are remarkably good at detecting shallow work." What they want: "project descriptions that explain your reasoning, not just the outcome; evidence of iteration: drafts, revisions, debugging notes, lessons learned; metrics and outcomes where available; collaboration context." Showing what went wrong and how you fixed it is a maturity signal, not a weakness.
+
+**Quantified results.** "Designed a bracket in SolidWorks" tells a hiring engineer nothing; "FEA-validated an aluminium bracket, cutting mass 22% while passing a 5 kN static load test with safety factor 2.1" tells them everything. William already has these numbers (350% bend-angle increase, 2:1 mechanical advantage) — they must be prominent.
+
+**Case studies over summaries.** Reviewers want the story: problem → constraints → approach → iteration → result. But keep a scannable summary on top (progressive disclosure) so a skimming reviewer gets the gist and a serious one can drill in.
+
+#### 4. Engineering/hardware portfolio specifics
+
+Hardware portfolios differ fundamentally from software/graphic-design ones: **"Mechanical engineering is judged on artefacts: a CAD assembly, a stress plot, a manufactured part, a rig that produced data."** Content types that matter:
+- **Video of hardware moving** — the single highest-value asset for robotics. The Construct: "Record a short, clear video (30-60 seconds) for every project showing it in action... A working demo is 10x better than a static image." A robotics-staffing perspective: "Text alone cannot capture the noise of an encoder trace or the precision of a pick-and-place arm"; a video demo "replaces the in-person lab tour."
+- **CAD renders and assemblies**, with part labeling.
+- **FEA/simulation results** — but with a validation discussion (comparison to hand calcs or experiment) to show engineering judgment, not just a pretty stress plot.
+- **Test rigs and fabrication detail** (materials, joints, compliance, gears, molding).
+- **Plots**: path tracking, error vs. time, sensor vs. ground truth, benchmark comparisons.
+- **Schematics/PCB** (relevant to William's Terrier Motorsport AMS/BMS KiCad work).
+
+**Named exemplar portfolios (Northwestern MSR program, which requires a portfolio instead of a thesis).** The program states verbatim: "we know that our students are hired by companies and invited to join prestigious labs based on the strength of their portfolios. Therefore, instead of writing a typical master's thesis, one requirement of the [MSR] program is to develop an online project portfolio."
+- **Katie Hughes (katie-hughes.github.io)** — now at the AI Institute, interned at Boston Dynamics. Scannable single-page index; each project = name + tech tags linking to a deep-dive. Her capstone page is the model arc: title + GitHub link at top → technologies → plain-language summary → embedded YouTube demo of the robot → algorithm explanation with rendered LaTeX math → system design → results → future work → references → named acknowledgments. Standout: a collapsible "Previous System Designs" section documenting **two abandoned hardware approaches** with specifics ("the onboard Jetson boards on the Unitree were too slow... I only received odometry updates at 5 Hz").
+- **Marno Nel (marnonel6.github.io)** — now at Bonsai Robotics. Card grid of ~16 projects, each with thumbnail + one-sentence description + tech tags. Hero (autonomous drone) led with as project #1; case study includes a bulleted BOM, a high-level program diagram, an 8-state state machine, multiple embedded demo videos, and a merged open-source pull request. Good model for signaling multidisciplinary breadth (mech design, embedded C, PCB, controls, CV, ML).
+- **Anna Garverick (algarv.github.io/Portfolio)** — now at Diligent Robotics. Blog/magazine grid where each project card leads with an **animated GIF of the robot in motion**, so working hardware is the first thing you see. Most ME-relevant (BallBot: CAD → 3D printing → laser cutting → RP2040 C control). Candidly documents failure (her robot "drove itself off the table... totally shattered, but I managed to hold it together with enough hot glue to get in a few test runs").
+- **Maurice Rahme (moribots.github.io)** — now Staff Robotics Engineer at Boston Dynamics. Hero is an open-source sub-$600 quadruped he designed, built, ran RL on, and submitted to ICRA; case study leads with the budget constraint and includes a full mechanical redesign with specifics ("moved all servos to the hip to save 60g on the lower legs").
+
+**Cross-cutting pattern:** landing page = scannable project grid/list with tech tags and resume/GitHub/LinkedIn visible → each project a full case study (problem → components/system design → technical deep-dive with math/diagrams → embedded demo video → quantified results → future work → GitHub link) → collaborators credited by name.
+
+**BU Engineering Portfolio Challenge specifics:** Sponsored by the Merrill L. Ebner Fund, open to all College of Engineering students; prizes by class plus Best Overall ($500). Judged on "creative engineering work and skills" from classwork, personal projects, and internships. BU runs prep events including "Principles of Portfolio Design: What Employers Look For." Past winner Austin Briggs won as a freshman with minimalist design that broke technical concepts into accessible words and pictures.
+
+#### 5. Case-study structure (proven arc)
+
+The engineering problem-solving structure (per U. Toronto's Engineering Communication Program) is **Situation → Problem → Solution(s) → Evaluation.** Expanded for a portfolio case study:
+1. **Context / problem (the "why")** — one or two sentences a non-specialist can follow.
+2. **Constraints** — hardware limits, budget, timeline, tolerances. Constraints "show how you prioritize trade-offs" and are a core engineering-maturity signal.
+3. **Approach / design** — your reasoning and system design (diagrams, CAD, math).
+4. **Iteration** — what you tried, what failed, what you changed. This is where credibility lives.
+5. **Result** — quantified outcomes, plots, a demo video proving it worked.
+6. **Reflection / what I'd do differently + future work** — shows self-awareness.
+
+Plus: your specific role/contribution (especially for team projects — BU Mars Rover, Terrier Motorsport), named collaborators, and a link to code/repo.
+
+**Presenting failure credibly:** frame it as the engineering norm — "engineers embrace the failure and work on making it better... the failure reveals the insight to improve their designs." Lead with what the failure taught you and the change it drove. Honesty here "can be more powerful than pretending everything worked."
+
+#### 6. Editable portfolio architecture (the self-editing requirement)
+
+William wants to change a word, swap an image, or add a project **without touching code**, with markdown-style rich text (bold, italic, links). Options for a single-user static site on GitHub Pages:
+
+- **Decap CMS (formerly Netlify CMS)** — free, open-source, Git-based; "the most established (~18k GitHub stars, nearly a decade in production)" and integrates with the widest range of Git backends and static-site generators. A single-page React app you drop into `/admin`; a `config.yml` defines your content model; edits commit Markdown/YAML/JSON straight to your GitHub repo. Tradeoff: dated editorial UI, YAML config gets unwieldy on complex models, slower maintenance pace. **Best fit for zero-cost, set-and-forget editing on GitHub Pages.** Note: authentication on GitHub Pages needs an OAuth provider (a small extra setup step, since there's no Netlify backend).
+- **TinaCMS** — Git-backed, offers live in-context visual editing (click text on the live site and edit it) — closest to the "change a word without thinking about code" experience. Content stays as Markdown/MDX/JSON in the repo. Tradeoff: relies on Tina Cloud (free tier for individuals) or self-hosting work; more setup.
+- **Sanity / Contentful** — headless, database-backed, API-first. Powerful but overkill for a single-user personal site, and they introduce a build/fetch dependency and potential cost. Not recommended here.
+- **Figma Sites CMS** — Figma shipped a built-in CMS in public beta on Nov 20, 2025 ("Build dynamic, content-rich websites with Figma Sites CMS... Designers can now create blogs, portfolios, and events pages featuring dynamic content that's easy to update"), supporting collections, CMS pages, and CMS lists. But Figma Sites **does not support code export**, publishes only via Figma hosting, and does not yet support nested URL structures, API access, content staging, or granular editor permissions — so choosing it means abandoning William's GitHub Pages two-repo setup. A viable alternative only if he's willing to move hosting into Figma.
+
+**Recommendation:** Keep the GitHub Pages two-repo setup. Add **Decap CMS** (simplest, free, Git-native) or **TinaCMS** (nicer editing UX) as the editing layer. Content lives as Markdown + front-matter (or JSON) in the repo; the GitHub Action already in place rebuilds and deploys to the public `username.github.io` repo on commit.
+
+---
+
+### Part B — Ready-to-Paste Figma Make Prompt
+
+> **Important caveat, stated first:** Figma Make generates a designed, interactive front end (React/HTML/CSS you can preview, edit, and export). It is **not a CMS** and will **not** by itself give you no-code, word-level self-editing with a Git-backed content store. Use the prompt below to generate the *design and front-end*, structured so its content is cleanly separated into a data file. Then wire that data file to **Decap CMS or TinaCMS** on your existing GitHub Pages repo so you can edit text/images in a browser without touching code. The prompt explicitly asks Figma Make to externalize content into an editable data layer to make that handoff clean.
+
+Paste everything below into Figma Make:
+
+---
+
+**Build a personal engineering portfolio website for a mechanical/robotics engineering undergraduate. Single-page site with smooth-scroll sections plus individual project case-study pages. Prioritize a focused, high-contrast, restrained design over a busy one.**
+
+**DESIGN PRINCIPLES (follow these as hard rules):**
+- **Strict visual hierarchy.** Exactly one dominant focal point per screen. Establish three levels of emphasis: (1) the hero project — largest, boldest, richest; (2) two secondary featured projects — medium weight; (3) remaining projects — compact list items. Do NOT make every section a hero; supporting elements must visibly step back (smaller, lighter, lower-contrast).
+- **Design in grayscale first conceptually**, then apply a restrained palette: one neutral background, one dark text color, and a SINGLE accent color used only for primary actions/links and the hero highlight. Maximum 2–3 font weights.
+- **Generous whitespace.** Use a constrained spacing scale (8, 16, 24, 32, 48, 64, 96px). Start spacious.
+- **Typography:** body text 16–20px, line-height 1.4–1.5, body-text column max width ~65–70 characters (~640–720px). Use a clean professional sans-serif (e.g., Inter) for UI and optionally a distinct weight/typeface for headings. No Times New Roman or Arial. Use bold sparingly for emphasis.
+- **Scanning:** front-load headings and first words; strong left-aligned headings; alternate full-width "layer-cake" bands on project pages so content is scannable.
+- **Above the fold:** the hero section must instantly communicate name, discipline, and the single best project, because reviewers triage in seconds.
+
+**ACCESSIBILITY / CONTRAST:**
+- Meet WCAG 2.2 AA: body-text contrast ≥ 4.5:1, large text (≥24px or ≥18.66px bold) ≥ 3:1, and non-text UI elements (buttons, focus rings, icons) ≥ 3:1.
+- Visible keyboard focus states; semantic headings (one h1, logical h2/h3); alt text on all images; captions/transcripts hooks for videos.
+
+**CONTENT STRUCTURE (one hero, not a flat equal-weight grid):**
+1. **Hero / above-the-fold:** "William Dakare — Mechanical Engineering, Boston University (BS MechE '29)." One-line value proposition tag (e.g., "Robotics: compliant mechanisms, soft robots, controls"). Credential chips: QuestBridge Scholar · Dean's List. Buttons: Résumé, GitHub, LinkedIn, Email. Immediately below, a compact "Featured Work" teaser pointing to the hero project.
+2. **HERO PROJECT (Level 1, dominant):** NSF REU at BYU Compliant Mechanisms & Robotics Research Group. Full-width, oversized, with a large media slot for a demo video/GIF and a CAD/FEA render. Case-study layout: Problem → Constraints → Approach → Iteration → Result → Future work. Content slots: modeling isoperimetric soft robots; cable-driven 2:1 mechanical-advantage loading rig; FEA; MATLAB/Baumgarte stabilization; waterjet fabrication. Prominent quantified-result callouts.
+3. **SECONDARY FEATURED (Level 2, two cards, medium weight):**
+   - **BU Material Robotics Lab** — 4mm bronchoscopy soft robot; silicone injection molding; DFM changes that **increased bend angle 350%** (make this number a large callout). Media slot for a video of the robot bending.
+   - **Self-initiated builds** — VLA-assisted prosthetic gripper and maze-solving robot. Media slots for demo GIFs.
+4. **MORE PROJECTS (Level 3, compact list, title + one line + tech tags):**
+   - **BU Mars Rover** — PID motor control in C++, ROS 2.
+   - **Terrier Motorsport** — AMS/BMS design in KiCad (schematic/PCB thumbnail).
+5. **About** — short first-person bio; targeting robotics roles (e.g., Figure AI) and graduate school.
+6. **Skills** — grouped, scannable: Design/CAD; Analysis/Simulation (FEA, MATLAB); Controls & Software (C++, ROS 2); Fabrication (waterjet, silicone injection molding); Electronics (KiCad).
+7. **Contact / footer** — email, GitHub, LinkedIn, résumé download.
+
+Each project card carries **tech-stack tags** and links to a full case-study page following the same six-part arc. Every hero/featured project has a slot for an embedded video (YouTube-embed style) because video of hardware moving is the highest-value asset for robotics. Provide slots for CAD renders, FEA plots, and test-rig photos.
+
+**EDITABLE CONTENT LAYER (critical requirement):**
+- **Do NOT hard-code the portfolio's text and image URLs inside components.** Externalize ALL editable content — every project's title, summary, body copy, result metrics, tags, image URLs, and video URLs — into a single structured data file (a `content.json` or per-project Markdown files with front-matter). Components must read from this data layer and render it.
+- Body/case-study text fields must support **markdown-style rich text: bold, italic, and hyperlinks**, rendered from the data layer.
+- Images must be referenced by a swappable URL/path field with an alt-text field, so an image can be replaced by changing one value.
+- Structure the data so a non-coder could later connect it to a Git-based CMS (Decap CMS or TinaCMS): use clear collections ("projects") with consistent fields (title, slug, tier ["hero"|"featured"|"more"], summary, body_markdown, metrics[], tags[], hero_image, gallery[], video_url).
+- Generate clean, exportable React/HTML so I can host it on GitHub Pages.
+
+**TONE / STYLE:** Confident, technical, restrained. Minimalist like an award-winning student engineering portfolio — let the work and the numbers be the focal points. Grad-school-and-robotics-recruiter audience.
+
+---
+
+## Recommendations
+
+**Stage 1 — Restructure content before touching design (this week).**
+- Cut to **5 projects**, ranked into three tiers: **Hero = BYU NSF REU compliant-mechanisms work**; **Featured = BU bronchoscopy soft robot (lead with the 350% bend-angle number) + self-initiated builds**; **More = Mars Rover + Terrier Motorsport.** This single act of differentiation is the "clear contrast" you feel is missing.
+- For the hero, write the six-part case study (problem → constraints → approach → iteration → result → future work). Explicitly document one iteration/failure and what it taught you.
+- Record a **30–60 second video** of at least the hero and the bronchoscopy robot in action. This is the highest-leverage asset you can add.
+
+**Stage 2 — Generate the design in Figma Make.** Paste the Part B prompt. Iterate with follow-ups like "make the hero project twice the visual weight of the featured cards" and "reduce the palette to one accent color." Export the React/HTML.
+
+**Stage 3 — Wire up the editing layer.** Deploy the exported site into your existing private-master → GitHub Action → public `username.github.io` pipeline. Add **Decap CMS** (free, simplest) at `/admin` pointing at your `projects` Markdown/JSON — or **TinaCMS** if you want click-to-edit-on-the-live-page. Now a one-word change is a browser edit that auto-commits and redeploys.
+
+**Stage 4 — Enter the BU Portfolio Challenge and get feedback.** Submit, attend the "Principles of Portfolio Design" prep event, and use judge feedback to refine — past winners cite the feedback loop as the most valuable part.
+
+**Benchmarks that would change the plan:**
+- If a reviewer can't identify your best project within ~10 seconds of landing, your hero isn't dominant enough — increase its size/contrast and demote the rest further.
+- If you find yourself with more than 5 projects at similar weight, cut or demote until the hierarchy is obvious.
+- If Decap's OAuth setup on GitHub Pages proves painful, switch to Tina Cloud's free tier (hosted auth) rather than abandoning the editable layer.
+- If you decide you value in-Figma CMS convenience over your GitHub Pages workflow, Figma Sites' built-in CMS is a viable alternative — but you'd give up code export and GitHub hosting.
+
+## Caveats
+
+- **Figma Make is a design/front-end generator, not a CMS.** Its exported code is known to be verbose ("div soup") and may use absolute positioning rather than responsive auto-layout; plan a cleanup/refinement pass before deploying. It will not deliver the no-code editing requirement alone — the CMS pairing is mandatory for that goal, not optional.
+- **Figma's product line is evolving fast and names overlap.** "Figma Make" (prompt-to-code) is distinct from "Figma Sites" (design-to-published-website, with its own built-in CMS in beta since Nov 2025). Feature availability, plans, and the "Content seat" pricing are in active beta and may change — verify current capabilities in Figma before committing.
+- **The "seconds-per-review" figures are directional.** The 7.4-second figure is from Ladders Inc.'s resume eye-tracking study (a rejection-filter time, not total evaluation time), and the ~15-second portfolio figure is general developer-hiring guidance, not robotics-specific. Treat them as motivation for a strong above-the-fold, not precise law.
+- **Hiring-manager "wants" for robotics come largely from staffing/education firms and practitioner blogs**, not a named Figure AI/Boston Dynamics recruiter; they are consistent with each other and with what the successful Northwestern portfolios actually do, but some carry marketing motive. The strongest evidence is outcomes: those portfolios led to real offers at Boston Dynamics and the AI Institute.
+- **Respect confidentiality.** Some REU/lab work may have publication or IP constraints — confirm what you're permitted to show before posting detailed results or media.
