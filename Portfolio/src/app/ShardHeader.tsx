@@ -270,17 +270,17 @@ function IdentityBlock({
       {/* Semantic h1, visually small, carries SEO weight */}
       <h1
         style={{
-          fontFamily:    FONT_MONO,
-          fontSize:      "13px",
-          fontWeight:    500,
-          letterSpacing: "0.08em",
-          textTransform: "uppercase",
-          color:         "var(--foreground)",
+          fontFamily:    "var(--font-display)",
+          fontSize:      "clamp(22px, 3vw, 34px)",
+          fontWeight:    600,
+          letterSpacing: "0.01em",
+          color:         "var(--accent)",
           marginBottom:  "14px",
           lineHeight:    1.4,
         }}
       >
-        {displayName} · {displayRole} · {PORTFOLIO.hero.institution}
+        <span>{displayName}</span>
+        <span style={{ fontFamily: FONT_MONO, fontSize: "11px", fontWeight: 500, letterSpacing: "0.08em", color: "var(--foreground)", textTransform: "uppercase" }}> · {displayRole} · {PORTFOLIO.hero.institution}</span>
       </h1>
 
       <p

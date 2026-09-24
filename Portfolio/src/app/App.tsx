@@ -283,6 +283,26 @@ interface AppCtx {
   heroPhoto: { url: string; size: number };
   contentOverrides: Record<string, Record<string, string>>;
 }
+
+interface HowThinkItem {
+  question: string;
+  answer: string;
+}
+
+function parseHowThink(value: string | undefined): HowThinkItem[] {
+  if (!value) return PORTFOLIO.how_think.questions;
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    if (!Array.isArray(parsed)) return PORTFOLIO.how_think.questions;
+    return parsed.filter((item): item is HowThinkItem =>
+      typeof item === "object" && item !== null &&
+      typeof (item as HowThinkItem).question === "string" &&
+      typeof (item as HowThinkItem).answer === "string"
+    );
+  } catch {
+    return PORTFOLIO.how_think.questions;
+  }
+}
 const Ctx = createContext<AppCtx>({
   theme: "light", setTheme: () => {},
   audience: "companies", setAudience: () => {},
@@ -668,9 +688,9 @@ function TagFilter({ allTags, active, onChange }: { allTags: string[]; active: s
 
 // ─── Utility tag chip ─────────────────────────────────────────────────────────
 
-function Tag({ children }: { children: React.ReactNode }) {
+function Tag({ children, surface }: { children: React.ReactNode; surface?: "accent" }) {
   return (
-    <span className="inline-block px-2 py-0.5 text-xs text-muted-foreground border border-border rounded-md" style={{ fontFamily: FONT_MONO, letterSpacing: "0.02em" }}>
+    <span className={`inline-block px-2 py-0.5 text-xs border rounded-md ${surface ? "border-[var(--accent-surface)]" : "text-muted-foreground border-border"}`} style={{ color: surface ? "var(--on-accent)" : undefined, fontFamily: FONT_MONO, letterSpacing: "0.02em" }}>
       {children}
     </span>
   );
@@ -1250,15 +1270,18 @@ function FolderCard({ project, highlighted }: { project: RenderProject; highligh
       >
         {/* Raised tab, top left */}
         <div className="absolute top-0 left-5 z-20">
-          <div className="h-9 px-4 flex items-center rounded-t-lg bg-card border border-b-0 border-border">
-            <span className="text-foreground/90 uppercase" style={{ fontFamily: FONT_MONO, fontSize: "12px", letterSpacing: "0.08em" }}>
+          <div className="h-9 px-4 flex items-center rounded-t-lg border border-b-0" style={{ background: "var(--accent)", borderColor: "var(--accent-surface)" }}>
+            <span className="uppercase" style={{ color: "var(--on-accent)", fontFamily: FONT_MONO, fontSize: "12px", letterSpacing: "0.08em" }}>
               {label}
             </span>
           </div>
         </div>
 
         {/* Folder body */}
-        <div className="relative rounded-2xl rounded-tl-none border border-border bg-card/80 px-6 pt-8 pb-6 overflow-hidden">
+        <div
+          className="relative rounded-2xl rounded-tl-none border px-6 pt-8 pb-6 overflow-hidden"
+          style={{ background: "var(--accent)", borderColor: "var(--accent-surface)" }}
+        >
           {/* Loose papers */}
           <div className="relative mx-auto h-56 w-full">
             {children.map((child, i) => {
@@ -1270,7 +1293,7 @@ function FolderCard({ project, highlighted }: { project: RenderProject; highligh
                   key={child.slug}
                   onClick={() => setModalProject(child)}
                   aria-label={`Open project: ${child.title}`}
-                  className="absolute left-1/2 top-2 -ml-24 w-48 origin-bottom rounded-lg border border-border bg-secondary overflow-hidden shadow-xl transition-transform duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none group-hover:[transform:var(--fanned)] group-focus-within:[transform:var(--fanned)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-card"
+                  className="absolute left-1/2 top-2 -ml-24 w-48 origin-bottom rounded-lg border border-[var(--accent-surface)] bg-card overflow-hidden shadow-xl transition-transform duration-150 ease-out motion-reduce:transition-none motion-reduce:transform-none group-hover:[transform:var(--fanned)] group-focus-within:[transform:var(--fanned)] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--on-accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--accent)]"
                   style={{ ["--fanned" as string]: fanned, transform: rest, zIndex: 10 + i } as React.CSSProperties}
                 >
                   <div className="aspect-[4/3] w-full overflow-hidden bg-muted">
@@ -1290,11 +1313,46 @@ function FolderCard({ project, highlighted }: { project: RenderProject; highligh
 
           {/* Summary tags */}
           <div className="mt-4 flex flex-wrap gap-1.5 border-t border-border/60 pt-4">
-            {project.tags.map((t) => <Tag key={t}>{t}</Tag>)}
+            {project.tags.map((t) => <Tag key={t} surface="accent">{t}</Tag>)}
           </div>
         </div>
       </section>
     </>
+  );
+}
+
+function HowIThink() {
+  const { contentOverrides } = useContext(Ctx);
+  const content = contentOverrides["hero"] ?? {};
+  const items = parseHowThink(content.how_think_questions);
+  const intro = content.how_think_intro || PORTFOLIO.how_think.intro;
+  const prompt = content.how_think_prompt || PORTFOLIO.how_think.prompt;
+  const imageUrl = content.how_think_image_url || PORTFOLIO.how_think.image_url;
+  const imageAlt = content.how_think_image_alt || PORTFOLIO.how_think.image_alt;
+
+  return (
+    <section id="how-i-think" className="border-y border-border relative z-10">
+      <div className="max-w-6xl mx-auto px-6 py-20 lg:py-24">
+        <div className="grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-16 items-start">
+          <div className="flex flex-col gap-4">
+            <span className="text-xs text-primary uppercase tracking-widest" style={{ fontFamily: FONT_MONO }}>How I think?</span>
+            <h2 className="text-foreground leading-tight" style={{ fontFamily: FONT_SERIF, fontSize: "var(--fs-h2)" }}>How I think?</h2>
+            <p className="text-muted-foreground leading-relaxed" style={{ fontFamily: FONT_SANS, maxWidth: "42ch" }}>{intro}</p>
+            {imageUrl && <img src={imageUrl} alt={imageAlt || "Engineering process"} className="w-full max-w-sm aspect-[4/3] object-cover rounded-md border border-border" loading="lazy" />}
+          </div>
+          <div className="border-t border-border">
+            {items.map((item) => (
+              <Collapsible key={item.question} label={item.question}>
+                <p className="text-muted-foreground leading-relaxed pr-8" style={{ fontFamily: FONT_SANS }}>{item.answer}</p>
+              </Collapsible>
+            ))}
+            <p className="pt-6 text-primary leading-relaxed" style={{ fontFamily: FONT_MONO, fontSize: "0.82rem" }}>
+              {prompt}
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
   );
 }
 
@@ -1620,6 +1678,7 @@ function HomePage() {
     <main>
       <Hero onPitch={onPitch} />
       <About />
+      <HowIThink />
       <HeroProject project={heroProject} />
       <FeaturedProjects projects={featured} />
       <ProjectTeams />
