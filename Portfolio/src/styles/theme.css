@@ -128,6 +128,11 @@
     @apply bg-background text-foreground;
   }
 
+  /* Card surfaces use the dark-field utility names, so remap text locally. */
+  [class*="bg-card"] .text-foreground { color: var(--ink-on-surface); }
+  [class*="bg-card"] .text-muted-foreground { color: var(--ink-on-surface-muted); }
+  [class*="bg-card"] .text-primary { color: var(--accent-surface); }
+
   /* Focus ring: 2px accent, 3px offset, visible on field, surface, and photos. */
   :focus-visible {
     outline: 2px solid var(--accent);

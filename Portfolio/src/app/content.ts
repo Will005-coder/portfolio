@@ -247,6 +247,18 @@ export const PORTFOLIO = {
     bio: "I'm a mechanical engineering student at Boston University interested in the mechanics and control of robots that interact with the physical world: compliant mechanisms, soft actuators, and the embedded systems that drive them. I've had the chance to model isoperimetric soft robots at BYU's NSF REU, iterate on sub-5 mm medical devices at BU's Material Robotics Lab, and build independently from scratch. I'm applying to MS/PhD programs in robotics and looking for industry roles at companies like Figure AI where mechatronics, controls, and fabrication meet. Outside the lab I'm a QuestBridge Scholar and spend time mentoring first-generation college students in STEM.",
   },
 
+  how_think: {
+    intro: "To answer some of your questions, here is the short version of how I approach uncertain engineering problems.",
+    prompt: "To answer some of your questions, start with the constraint that matters most and test it early.",
+    image_url: "",
+    image_alt: "",
+    questions: [
+      { question: "What do you optimize for first?", answer: "I start with the constraint that can actually break the system, then build the smallest test that can expose it early." },
+      { question: "How do you handle failure?", answer: "I treat failure as data. I document the condition, isolate the variable, and change one thing at a time before trusting the next result." },
+      { question: "What makes a design finished?", answer: "A design is ready when its measured behavior is understood, its tradeoffs are explicit, and another person can reproduce the important test." },
+    ],
+  },
+
   skills: {
     groups: [
       { label: "Design & CAD", items: ["SolidWorks", "Fusion 360", "GD&T", "DFM", "Tolerancing"] },

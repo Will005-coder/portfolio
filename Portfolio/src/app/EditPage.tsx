@@ -195,6 +195,28 @@ interface ContentDraft {
   github_url: string;
   linkedin_url: string;
   resume_url: string;
+  how_think_intro: string;
+  how_think_prompt: string;
+  how_think_image_url: string;
+  how_think_image_alt: string;
+  how_think_questions: string;
+}
+
+interface HowThinkDraft {
+  question: string;
+  answer: string;
+}
+
+function parseHowThinkDraft(value: string): HowThinkDraft[] {
+  try {
+    const parsed = JSON.parse(value) as unknown;
+    if (Array.isArray(parsed)) return parsed.filter((item): item is HowThinkDraft =>
+      typeof item === "object" && item !== null &&
+      typeof (item as HowThinkDraft).question === "string" &&
+      typeof (item as HowThinkDraft).answer === "string"
+    );
+  } catch { /* use defaults below */ }
+  return PORTFOLIO.how_think.questions;
 }
 
 // ─── Projects data model (Prompt 3) ──────────────────────────────────────────
@@ -548,6 +570,9 @@ function ContentTab({ draft, onChange, onSave, saveStatus, errorMsg }: {
   saveStatus: "idle" | "saving" | "saved" | "error";
   errorMsg?: string;
 }) {
+  const questions = parseHowThinkDraft(draft.how_think_questions);
+  const setQuestions = (next: HowThinkDraft[]) => onChange({ ...draft, how_think_questions: JSON.stringify(next) });
+
   return (
     <div className="flex flex-col gap-8">
       {/* Hero */}
@@ -598,6 +623,30 @@ function ContentTab({ draft, onChange, onSave, saveStatus, errorMsg }: {
       <section className="flex flex-col gap-4">
         <h3 className="text-xs text-[#C8FF00] uppercase tracking-widest" style={{ fontFamily: FONT_MONO }}>About</h3>
         <Input label="Bio" value={draft.about_bio} onChange={(v) => onChange({ ...draft, about_bio: v })} multiline />
+      </section>
+
+      <section className="flex flex-col gap-4">
+        <h3 className="text-xs text-[#C8FF00] uppercase tracking-widest" style={{ fontFamily: FONT_MONO }}>How I think?</h3>
+        <Input label="Intro" value={draft.how_think_intro} onChange={(v) => onChange({ ...draft, how_think_intro: v })} multiline />
+        <Input label="Line below dropdowns" value={draft.how_think_prompt} onChange={(v) => onChange({ ...draft, how_think_prompt: v })} multiline />
+        <div className="flex flex-col gap-2">
+          <label className="text-xs text-[#6E6E68] uppercase tracking-widest" style={{ fontFamily: FONT_MONO }}>Image URL</label>
+          <input type="url" value={draft.how_think_image_url} onChange={(e) => onChange({ ...draft, how_think_image_url: normalizeDriveUrl(e.target.value) })} placeholder="https://… or Google Drive share link" className="w-full bg-[#111] border border-[rgba(255,255,255,0.08)] rounded-md text-[#F0F0EC] text-sm px-3 py-2 focus:outline-none focus:border-[#C8FF00] transition-colors" />
+          <Input label="Image alt text" value={draft.how_think_image_alt} onChange={(v) => onChange({ ...draft, how_think_image_alt: v })} />
+          {draft.how_think_image_url && <img src={draft.how_think_image_url} alt={draft.how_think_image_alt || "Preview"} className="w-32 h-24 object-cover rounded border border-[rgba(255,255,255,0.1)]" />}
+        </div>
+        <div className="flex flex-col gap-3">
+          {questions.map((item, index) => (
+            <div key={index} className="flex flex-col gap-2 border border-[rgba(255,255,255,0.08)] rounded-md p-3">
+              <div className="flex items-center gap-2">
+                <Input label={`Question ${index + 1}`} value={item.question} onChange={(v) => setQuestions(questions.map((q, i) => i === index ? { ...q, question: v } : q))} />
+                <button type="button" aria-label={`Remove question ${index + 1}`} onClick={() => setQuestions(questions.filter((_, i) => i !== index))} className="text-[#6E6E68] hover:text-[#FF6B5E] p-2"><Trash2 size={14} /></button>
+              </div>
+              <Input label="Answer" value={item.answer} onChange={(v) => setQuestions(questions.map((q, i) => i === index ? { ...q, answer: v } : q))} multiline />
+            </div>
+          ))}
+          <button type="button" onClick={() => setQuestions([...questions, { question: "", answer: "" }])} className="inline-flex items-center gap-2 self-start text-xs text-[#C8FF00] border border-[rgba(200,255,0,0.35)] px-3 py-2 rounded-md" style={{ fontFamily: FONT_MONO }}><Plus size={13} /> Add question</button>
+        </div>
       </section>
 
       <section className="flex flex-col gap-4">
@@ -1771,6 +1820,11 @@ function EditorShell() {
     github_url: "https://github.com",
     linkedin_url: "https://linkedin.com",
     resume_url: "#",
+    how_think_intro: PORTFOLIO.how_think.intro,
+    how_think_prompt: PORTFOLIO.how_think.prompt,
+    how_think_image_url: PORTFOLIO.how_think.image_url,
+    how_think_image_alt: PORTFOLIO.how_think.image_alt,
+    how_think_questions: JSON.stringify(PORTFOLIO.how_think.questions),
   });
 
   // Load existing data from Supabase on mount.
@@ -1882,6 +1936,8 @@ function EditorShell() {
             contact_email: draft.contact_email,
             hero_photo_url: draft.hero_photo_url, hero_photo_size: draft.hero_photo_size,
             github_url: draft.github_url, linkedin_url: draft.linkedin_url, resume_url: draft.resume_url,
+            how_think_intro: draft.how_think_intro, how_think_prompt: draft.how_think_prompt, how_think_image_url: draft.how_think_image_url,
+            how_think_image_alt: draft.how_think_image_alt, how_think_questions: draft.how_think_questions,
         }},
       ]);
       if (error) {
